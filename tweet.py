@@ -20,12 +20,12 @@ class Horsefly(object):
 
     def buzz_words(self, text):
       buzz_text = re.sub('s+(?=[\W]|\Z)','zzz', text)
-      buzz_text = re.sub('er(?=[\W]|\Z)','ezz', text)
-      buzz_text = re.sub('en(?=[\W]|\Z)','enzz', text)
-      buzz_text = re.sub('S+(?=[\W]|\Z)','ZZZ', text)
-      buzz_text = re.sub('ER(?=[\W]|\Z)','EZZ', text)
+      buzz_text = re.sub('er(?=[\W]|\Z)','ezz', buzz_text)
+      buzz_text = re.sub('en(?=[\W]|\Z)','enzz', buzz_text)
+      buzz_text = re.sub('S+(?=[\W]|\Z)','ZZZ', buzz_text)
+      buzz_text = re.sub('ER(?=[\W]|\Z)','EZZ', buzz_text)
       if buzz_text != text:
-        tweet_it(buzz_text)
+        self.twitter.statuses.update(status=buzz_text)
     
     def not_tweeted(self, tweet):
       return tweet['id'] > int(self.redis.get(self.max_key))
