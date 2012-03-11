@@ -1,6 +1,6 @@
 from __future__ import print_function, unicode_literals, division
-import twitter, redis, re
-import os
+import twitter, redis
+import os, re, time
 
 class Horsefly(object):
     def __init__(self, twitter, redis):
@@ -47,4 +47,6 @@ if __name__ == "__main__":
       port=int(os.environ['REDIS_PORT']),
       db=int(os.environ['REDIS_DB']))
     horsefly = Horsefly(twitter_client, redis_client)
-    horsefly.update()
+    while True:
+      horsefly.update()
+      time.sleep(60)
