@@ -31,7 +31,7 @@ class Horsefly(object):
       return tweet['id'] > int(self.redis.get(self.max_key) or 1)
     
     def update_max(self, tweet):
-      if tweet['id'] > int(self.redis.get(self.max_key)):
+      if self.not_tweeted(tweet):
         self.redis.set(self.max_key, tweet['id'])
 
 if __name__ == "__main__":
