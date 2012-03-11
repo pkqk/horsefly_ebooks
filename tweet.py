@@ -28,7 +28,7 @@ class Horsefly(object):
         self.twitter.statuses.update(status=buzz_text)
     
     def not_tweeted(self, tweet):
-      return tweet['id'] > int(self.redis.get(self.max_key))
+      return tweet['id'] > int(self.redis.get(self.max_key) or 1)
     
     def update_max(self, tweet):
       if tweet['id'] > int(self.redis.get(self.max_key)):
