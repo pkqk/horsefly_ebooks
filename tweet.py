@@ -1,6 +1,6 @@
 from __future__ import print_function, unicode_literals, division
 import twitter, redis
-import os, re, time
+import os, re, time, urlparse
 
 class Horsefly(object):
     def __init__(self, twitter, redis):
@@ -9,7 +9,7 @@ class Horsefly(object):
       self.max_key = 'horsefly:max-tweet'
 
     def update(self):
-      since_id = False #self.redis.get(self.max_key)
+      since_id = self.redis.get(self.max_key)
       if since_id:
         tweets = self.twitter.statuses.home_timeline(since_id=since_id)
       else:
@@ -28,7 +28,6 @@ class Horsefly(object):
         tweet_it(buzz_text)
     
     def not_tweeted(self, tweet):
-      return True
       return tweet['id'] > int(self.redis.get(self.max_key))
     
     def update_max(self, tweet):
@@ -42,10 +41,14 @@ if __name__ == "__main__":
       os.environ['TWITTER_CONSUMER_TOKEN'],
       os.environ['TWITTER_CONSUMER_SECRET']
     ))
-    redis_client = redis.StrictRedis(
-      host=os.environ['REDIS_HOST'],
-      port=int(os.environ['REDIS_PORT']),
-      db=int(os.environ['REDIS_DB']))
+    if os.environ.has_key('REDIS_TO_GO'):
+      url = urlparse.urlparse(os.environ['REDIS_TO_GO'])
+      redis_client = redis.Redis(host=url.hostname, port=url.port, db=0, password=url.password)
+    else:
+      redis_client = redis.StrictRedis(
+        host=os.environ['REDIS_HOST'],
+        port=int(os.environ['REDIS_PORT']),
+        db=int(os.environ['REDIS_DB']))
     horsefly = Horsefly(twitter_client, redis_client)
     while True:
       horsefly.update()
