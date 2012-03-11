@@ -41,15 +41,8 @@ if __name__ == "__main__":
       os.environ['TWITTER_CONSUMER_TOKEN'],
       os.environ['TWITTER_CONSUMER_SECRET']
     ))
-    print(os.environ)
-    if os.environ.has_key('REDIS_TO_GO'):
-      url = urlparse.urlparse(os.environ['REDIS_TO_GO'])
-      redis_client = redis.StrictRedis(host=url.hostname, port=url.port, db=0, password=url.password)
-    else:
-      redis_client = redis.StrictRedis(
-        host=os.environ['REDIS_HOST'],
-        port=int(os.environ['REDIS_PORT']),
-        db=int(os.environ['REDIS_DB']))
+    url = urlparse.urlparse(os.environ['REDISTOGO_URL'])
+    redis_client = redis.StrictRedis(host=url.hostname, port=url.port, db=0, password=url.password)
     horsefly = Horsefly(twitter_client, redis_client)
     while True:
       horsefly.update()
