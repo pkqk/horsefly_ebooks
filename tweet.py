@@ -11,9 +11,9 @@ class Horsefly(object):
     def update(self):
       since_id = self.redis.get(self.max_key)
       if since_id:
-        tweets = self.twitter.statuses.home_timeline(since_id=since_id)
+        tweets = self.twitter.statuses.user_timeline(screen_name='horse_ebooks', since_id=since_id)
       else:
-        tweets = self.twitter.statuses.home_timeline()
+        tweets = self.twitter.statuses.user_timeline(screen_name='horse_ebooks')
       for tweet in filter(self.not_tweeted, reversed(tweets)):
         self.buzz_words(tweet['text'])
         self.update_max(tweet)
