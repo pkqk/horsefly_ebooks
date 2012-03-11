@@ -46,4 +46,5 @@ if __name__ == "__main__":
     horsefly = Horsefly(twitter_client, redis_client)
     while True:
       horsefly.update()
+      print("update run, no crashz")
       time.sleep(60)
