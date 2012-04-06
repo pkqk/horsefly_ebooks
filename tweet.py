@@ -45,6 +45,9 @@ if __name__ == "__main__":
     redis_client = redis.StrictRedis(host=url.hostname, port=url.port, db=0, password=url.password)
     horsefly = Horsefly(twitter_client, redis_client)
     while True:
-      horsefly.update()
+      try:
+        horsefly.update()
+      except twitter.api.TwitterError as e:
+        print(e.message)
       print("update run, no crashz")
       time.sleep(60*5)
