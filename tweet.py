@@ -63,6 +63,6 @@ if __name__ == "__main__":
         try:
             horsefly.update()
         except twitter.api.TwitterError as e:
-            print(e.message)
+            print(e)
         print("update run, no crashz")
         time.sleep(60 * 5)
