@@ -36,6 +36,8 @@ class Horsefly(object):
         buzz_text = re.sub('ER(?=[\W]|\Z)', 'EZZ', buzz_text)
         if buzz_text != text and len(text) <= 140:
             self.twitter.statuses.update(status=buzz_text)
+        elif len(text) > 140:
+            print("tweet too long: " + buzz_text)
 
     def not_tweeted(self, tweet):
         return tweet['id'] > int(self.redis.get(self.max_key) or 1)
@@ -63,6 +65,6 @@ if __name__ == "__main__":
         try:
             horsefly.update()
         except twitter.api.TwitterHTTPError as e:
-            print(e.message)
+            print("error: " + e.message)
         print("update run, no crashz")
         time.sleep(60 * 5)
