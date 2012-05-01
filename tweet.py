@@ -5,6 +5,7 @@ import os
 import re
 import time
 import urlparse
+import traceback
 
 
 class Horsefly(object):
@@ -64,7 +65,8 @@ if __name__ == "__main__":
     while True:
         try:
             horsefly.update()
+            print("update run, no crashz")
         except twitter.api.TwitterHTTPError as e:
             print("error: " + e.message)
-        print("update run, no crashz")
+            traceback.print_exc()
         time.sleep(60 * 5)
