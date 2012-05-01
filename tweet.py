@@ -35,9 +35,9 @@ class Horsefly(object):
         buzz_text = re.sub('en(?=[\W]|\Z)', 'enzz', buzz_text)
         buzz_text = re.sub('S+(?=[\W]|\Z)', 'ZZZ', buzz_text)
         buzz_text = re.sub('ER(?=[\W]|\Z)', 'EZZ', buzz_text)
-        if buzz_text != text and len(text) <= 140:
+        if buzz_text != text and len(text) < 140:
             self.twitter.statuses.update(status=buzz_text)
-        elif len(text) > 140:
+        elif len(text) >= 140:
             print("tweet too long: " + buzz_text)
 
     def not_tweeted(self, tweet):
